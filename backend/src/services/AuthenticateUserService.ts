@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm'; // as this repo has no specific rule, we can use this default
 import { compare } from 'bcryptjs'; // import hash function from crypto library
 import { sign } from 'jsonwebtoken';
-// import authConfig from '../config/auth';
+import authConfig from '../config/auth';
 
 // import AppError from '../errors/AppError';
 
@@ -39,13 +39,13 @@ class AuthenticateUserService {
       throw new Error('Incorrect email/ password combination');
     }
 
-    // // if pass through all those validations, I have an authenticated user
-    // const { secret, expiresIn } = authConfig.jwt;
+    // if pass through all those validations, I have an authenticated user
+    const { secret, expiresIn } = authConfig.jwt;
 
     // secret key generated with md5 online
-    const token = sign({}, '5247c254c0efef32f448be3045aa781f', {
+    const token = sign({}, secret, {
       subject: user.id, // connects key to user
-      expiresIn: '1d', // allow user to unlog! good for security
+      expiresIn, // allow user to unlog! good for security
     });
 
     return {
