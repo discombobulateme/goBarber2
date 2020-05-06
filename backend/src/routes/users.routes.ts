@@ -1,14 +1,14 @@
 import { Router } from 'express';
-// import multer from 'multer';
-// import uploadConfig from '../config/upload';
+import multer from 'multer';
+import uploadConfig from '../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
 // import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
-// import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import ensureAuthenticated from '../middleware/ensureAuthenticated';
 
 const usersRouter = Router();
-// const upload = multer(uploadConfig);
+const upload = multer(uploadConfig); // this upload is a multer instance, therefore contains methods
 
 usersRouter.post('/', async (request, response) => {
   const { name, email, password } = request.body;
@@ -27,23 +27,25 @@ usersRouter.post('/', async (request, response) => {
 
   // i return the band new created user as a json, becaus is a body request
   return response.json(user);
-// });
+});
 
-// usersRouter.patch(
-//   '/avatar',
-//   ensureAuthenticated,
-//   upload.single('avatar'),
-//   async (request, response) => {
-//     const updateUserAvatar = new UpdateUserAvatarService();
+usersRouter.patch(
+  '/avatar',
+  ensureAuthenticated, // first middleware
+  upload.single('avatar'), // second middleware
+  async (request, response) => {
+    console.log(request.file);
+    // const updateUserAvatar = new UpdateUserAvatarService();
 
-//     const user = await updateUserAvatar.execute({
-//       user_id: request.user.id,
-//       avatarFilename: request.file.filename,
-//     });
+    // const user = await updateUserAvatar.execute({
+    //   user_id: request.user.id,
+    //   avatarFilename: request.file.filename,
+    // });
 
-//     delete user.password;
+    // delete user.password;
 
-//     return response.json(user);
+    // return response.json(user);
+    return response.json({ ok: true });
   },
 );
 
