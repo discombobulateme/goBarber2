@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm'; // as this repo has no specific rule, we can use this default
 import { hash } from 'bcryptjs'; // import hash function from crypto library
 
-// import AppError from '../errors/AppError';
+import AppError from '../errors/AppError';
 
 import User from '../models/User';
 
@@ -22,8 +22,7 @@ class CreateUserService {
 
     // I validate if it already exists, or not. If it does, send error
     if (checkUserExists) {
-      // throw new AppError('Email address already used');
-      throw new Error('Email address already used');
+      throw new AppError('Email address already used');
     }
 
     // add crypto to password using imported hash fuunction

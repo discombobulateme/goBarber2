@@ -3,7 +3,7 @@ import { verify } from 'jsonwebtoken';
 
 import authConfig from '../config/auth';
 
-// import AppError from '../errors/AppError';
+import AppError from '../errors/AppError';
 
 // needed because my verify token needs to know its format
 interface TokenPayload {
@@ -23,8 +23,7 @@ export default function ensureAuthenticated(
   const authHeader = request.headers.authorization;
 
   if (!authHeader) {
-    // throw new AppError('JWT token is missing', 401);
-    throw new Error('JWT token is missing');
+    throw new AppError('JWT token is missing', 401);
   }
   /*
   Bearer token: as it is 2 different informations, need to split
@@ -48,7 +47,6 @@ export default function ensureAuthenticated(
 
     return next();
   } catch {
-    // throw new AppError('Invalid JWT token', 401);
-    throw new Error('Invalid JWT token');
+    throw new AppError('Invalid JWT token', 401);
   }
 }

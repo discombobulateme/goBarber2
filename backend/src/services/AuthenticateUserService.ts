@@ -3,7 +3,7 @@ import { compare } from 'bcryptjs'; // import hash function from crypto library
 import { sign } from 'jsonwebtoken';
 import authConfig from '../config/auth';
 
-// import AppError from '../errors/AppError';
+import AppError from '../errors/AppError';
 
 import User from '../models/User';
 
@@ -28,15 +28,13 @@ class AuthenticateUserService {
     // we don't need to compare, a simple: not(!) user is enough
     if (!user) {
       // for security purpose error doesnt'inform what actually is incorrect
-      // throw new AppError('Incorrect email/ password combination', 401);
-      throw new Error('Incorrect email/ password combination');
+      throw new AppError('Incorrect email/ password combination', 401);
     }
 
     const passwordMatched = await compare(password, user.password);
 
     if (!passwordMatched) {
-      // throw new AppError('Incorrect email/ password combination', 401);
-      throw new Error('Incorrect email/ password combination');
+      throw new AppError('Incorrect email/ password combination', 401);
     }
 
     // if pass through all those validations, I have an authenticated user

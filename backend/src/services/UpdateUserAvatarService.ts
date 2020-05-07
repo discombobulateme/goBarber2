@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs'; // node file system
 import uploadConfig from '../config/upload';
 
-// import AppError from '../errors/AppError';
+import AppError from '../errors/AppError';
 
 import User from '../models/User';
 
@@ -19,8 +19,7 @@ class UpdateUserAvatarService {
     const user = await userRepository.findOne(user_id); // validating user
 
     if (!user) {
-      throw new Error('Only authenticated users can change avatar');
-      // throw new AppError('Only authenticated users can change avatar', 401);
+      throw new AppError('Only authenticated users can change avatar', 401);
     }
 
     // delete previous avatar
